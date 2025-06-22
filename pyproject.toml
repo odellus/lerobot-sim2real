@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lerobot-sim2real"
+version = "0.1.0"
+description = "Sim2Real Manipulation with LeRobot"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "Thomas Stone", email = "your.email@example.com" }
+]
+dependencies = [
+    "mani-skill @ git+ssh://git@github.com/haosulab/ManiSkill.git",
+    "tensorboard",
+    "wandb",
+    "lerobot[feetech] @ file:///home/thomas/src/lerobot-sim2real/lerobot",
+    "torch>=2.2.0",
+    "torchvision>=0.17.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/StoneT2000/lerobot-sim2real"
+Repository = "https://github.com/StoneT2000/lerobot-sim2real.git"
+
+[tool.hatch.build.targets.wheel]
+packages = ["lerobot_sim2real"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.uv]
+prerelease = "allow"
