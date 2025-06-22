@@ -105,7 +105,7 @@ Now we get to train the robot we setup in the real world in simulation via RL. W
 For the SO100GraspCube-v1 environment we have the following already tuned script (uses about 8-10GB of GPU memory)
 
 ```bash
-seed=42
+seed=3
 python lerobot_sim2real/scripts/train_ppo_rgb.py --env-id="SO100GraspCube-v1" --env-kwargs-json-path=env_config.json \
   --ppo.seed=${seed} \
   --ppo.num_envs=1024 --ppo.num-steps=16 --ppo.update_epochs=8 --ppo.num_minibatches=32 \
@@ -117,7 +117,13 @@ python lerobot_sim2real/scripts/train_ppo_rgb.py --env-id="SO100GraspCube-v1" --
 
 This will train an agent via RL/PPO and track its training progress on Weights and Biases and Tensorboard. Run `tensorboard --logdir runs/` to see the local tracking. Checkpoints are saved to `runs/ppo-SO100GraspCube-v1-rgb-${seed}/ckpt_x.pt` and evaluation videos in simulation are saved to `runs/ppo-SO100GraspCube-v1-rgb-${seed}/videos`. If you have more GPU memory available you can train faster by bumping the `--ppo.num_envs` argument up to 2048.
 
-For this environment the evaluation result curves may look approximately like this.
+While training you can check out the eval videos which by default look like the following 4x4 grid showing 16 parallel environments:
+
+![](./assets/eval_image_annotated.png)
+
+Highlighted in red is just an enlarged image showing what the sim looks like. It is not what is fed to the policy during training or evaluation. Highlighted in blue is the actual 128x128 image given to the policy (you can ignore the colored segementation map), which shows the greenscreen in effect and possible other randomizations. If you don't want your eval videos to show the enlarged image and just show the actual image inputs, you can add `--ppo.render-mode="sensors"` and we will only save videos of the image inputs.
+
+Moreover, for this environment the evaluation result curves may look approximately like this during training.
 
 ![](./assets/eval_return_success_curves.png)
 
