@@ -1,10 +1,10 @@
 {
   "base_camera_settings": {
-      "pos": [0.69, 0.37, 0.28],
-      "fov": 0.8256,
-      "target": [0.185, -0.15, 0.0]
+      "pos": [0.020, 0.190, 0.505],
+      "fov": 0.655,
+      "target": [0.151, 0.10, 0.15]
   },
-  "greenscreen_overlay_path": null,
+  "greenscreen_overlay_path": "bg.png",
   "spawn_box_pos": [0.3, 0.05],
   "spawn_box_half_size": 0.1,
   "domain_randomization_config": {

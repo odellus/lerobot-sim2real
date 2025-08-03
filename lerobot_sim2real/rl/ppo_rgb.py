@@ -285,7 +285,7 @@ class Logger:
         self.log_wandb = log_wandb
     def add_scalar(self, tag, scalar_value, step):
         if self.log_wandb:
-            import wandb
+            import trackio as wandb
             wandb.log({tag: scalar_value}, step=step)
         self.writer.add_scalar(tag, scalar_value, step)
     def close(self):
@@ -345,19 +345,14 @@ def train(args: PPOArgs):
     if not args.evaluate:
         print("Running training")
         if args.track:
-            import wandb
+            import trackio as wandb
             config = vars(args)
             config["env_cfg"] = dict(**env_kwargs, num_envs=args.num_envs, env_id=args.env_id, reward_mode="normalized_dense", env_horizon=max_episode_steps, partial_reset=args.partial_reset)
             config["eval_env_cfg"] = dict(**env_kwargs, num_envs=args.num_eval_envs, env_id=args.env_id, reward_mode="normalized_dense", env_horizon=max_episode_steps, partial_reset=args.partial_reset)
             wandb.init(
                 project=args.wandb_project_name,
-                entity=args.wandb_entity,
-                sync_tensorboard=False,
                 config=config,
                 name=run_name,
-                save_code=True,
-                group=args.wandb_group,
-                tags=["ppo", "walltime_efficient"]
             )
         writer = SummaryWriter(f"runs/{run_name}")
         writer.add_text(
@@ -414,7 +409,7 @@ def train(args: PPOArgs):
                             eval_metrics[k].append(v)
             print(f"Evaluated {args.num_eval_steps * args.num_eval_envs} steps resulting in {num_episodes} episodes")
             for k, v in eval_metrics.items():
-                mean = torch.stack(v).float().mean()
+                mean = torch.stack(v).float().mean().item()
                 if logger is not None:
                     logger.add_scalar(f"eval/{k}", mean, global_step)
                 print(f"eval_{k}_mean={mean}")
@@ -455,7 +450,7 @@ def train(args: PPOArgs):
                 final_info = infos["final_info"]
                 done_mask = infos["_final_info"]
                 for k, v in final_info["episode"].items():
-                    logger.add_scalar(f"train/{k}", v[done_mask].float().mean(), global_step)
+                    logger.add_scalar(f"train/{k}", v[done_mask].float().mean().item(), global_step)
 
                 for k in infos["final_observation"]:
                     infos["final_observation"][k] = infos["final_observation"][k][done_mask]

@@ -19,6 +19,13 @@ dependencies = [
     "lerobot[feetech] @ file:///home/thomas/src/lerobot-sim2real/lerobot",
     "torch>=2.2.0",
     "torchvision>=0.17.0",
+    "ipykernel>=7.0.0a1",
+    "tiktoken>=0.9.0",
+    "openai>=1.93.0",
+    "pyqt5>=5.15.11",
+    "tyro>=0.9.24",
+    "seaborn>=0.13.2",
+    "trackio>=0.2.2",
 ]
 
 [project.urls]

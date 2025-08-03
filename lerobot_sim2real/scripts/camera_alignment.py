@@ -14,6 +14,8 @@ import tyro
 from mani_skill.utils.visualization.misc import tile_images
 from mani_skill.utils import sapien_utils
 from dataclasses import dataclass
+import matplotlib
+# matplotlib.use('QtAgg')
 import matplotlib.pyplot as plt
 
 @dataclass
@@ -147,6 +149,7 @@ def main(args: Args):
     real_obs, _ = real_env.reset()
 
     # for plotting robot camera reads
+    plt.ion()
     fig = plt.figure()
     ax = fig.add_subplot()
 
